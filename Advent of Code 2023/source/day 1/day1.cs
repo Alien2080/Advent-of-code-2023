@@ -2,9 +2,9 @@ using System.Data.Common;
 
 namespace solutions
 {
-    public class day1
+    public class Day1
     {
-        public static void day_1_1()
+        public static void Puzzle1()
         {
             string filePath = @"..\..\..\source\day 1\input.txt";
             var input = File.ReadAllText(filePath);
@@ -33,7 +33,7 @@ namespace solutions
             Console.WriteLine("Day 1, puzzle 1: " + total);
         }
 
-        public static void day_1_2()
+        public static void Puzzle2()
         {
             string filePath = @"..\..\..\source\day 1\input.txt";
             var input = File.ReadAllText(filePath);
