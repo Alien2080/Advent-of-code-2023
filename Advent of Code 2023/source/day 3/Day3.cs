@@ -6,7 +6,7 @@ namespace solutions
 {
     public partial class Day3
     {
-        private static readonly string inputFilePath = Path.Combine(Environment.CurrentDirectory, @"source\day 3\input.txt");
+        private static readonly string inputFilePath = Path.Combine(Environment.CurrentDirectory, @"..\..\..\source\day 3\input.txt");
 
         public static void Puzzle1()
         {
@@ -29,9 +29,9 @@ namespace solutions
                         // check row above.
                         if (rowIndex - 1 > 0)
                         {
-                            if (columnIndex -1 > 0 && char.IsNumber(inputArray[(rowIndex-1)][columnIndex-1]))
+                            if (columnIndex -1 > 0 && char.IsNumber(inputArray[rowIndex-1][columnIndex-1]))
                             {
-
+                                GetNumberAtLocation(inputArray, rowIndex-1, columnIndex-1);
                             }
                             if (char.IsNumber(inputArray[(rowIndex-1)][columnIndex]))
                             {
@@ -58,11 +58,12 @@ namespace solutions
             Console.WriteLine("Day 2, puzzle 1: " + total);
         }
 
+     
 
         public static void Puzzle2()
         {
 
-            Console.WriteLine("Day 2, puzzle 2: " + total);
+            // Console.WriteLine("Day 2, puzzle 2: " + total);
         }
 
         private static char[][] Create2Darray(string input)
@@ -73,6 +74,11 @@ namespace solutions
                     .ToArray();
             
             return data;
+        }
+
+           private static void GetNumberAtLocation(char[][] inputArray, int v1, int v2)
+        {
+            
         }
     }
 }

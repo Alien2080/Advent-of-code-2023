@@ -4,10 +4,11 @@ namespace solutions
 {
     public class Day1
     {
+        private static readonly string inputFilePath = Path.Combine(Environment.CurrentDirectory, @"..\..\..\source\day 1\input.txt");
+
         public static void Puzzle1()
         {
-            string filePath = @"..\..\..\source\day 1\input.txt";
-            var input = File.ReadAllText(filePath);
+            var input = File.ReadAllText(inputFilePath);
             string[] lines = input.Split(Environment.NewLine);
 
             int total = 0;
@@ -35,8 +36,7 @@ namespace solutions
 
         public static void Puzzle2()
         {
-            string filePath = @"..\..\..\source\day 1\input.txt";
-            var input = File.ReadAllText(filePath);
+            var input = File.ReadAllText(inputFilePath);
             string[] lines = input.Split(Environment.NewLine);
 
             int total = 0;
