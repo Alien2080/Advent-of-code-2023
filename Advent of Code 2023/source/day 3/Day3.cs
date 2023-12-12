@@ -1,7 +1,3 @@
-using System.Net.Http.Headers;
-using System.Reflection.Metadata;
-using System.Runtime.CompilerServices;
-
 namespace solutions
 {
     public partial class Day3
@@ -108,13 +104,206 @@ namespace solutions
                 rowIndex++;
             }
 
-            Console.WriteLine("Day 2, puzzle 1: " + total);
+            Console.WriteLine("Day 3, puzzle 1: " + total);
         }
 
         public static void Puzzle2()
         {
+            string input = File.ReadAllText(inputFilePath);
+            var inputArray = Create2Darray(input);
 
-            // Console.WriteLine("Day 2, puzzle 2: " + total);
+            int total = 0;
+            int rowIndex = 0;
+            int columnIndex;
+            foreach (var line in inputArray)
+            {
+                columnIndex = 0;
+                foreach (var character in line)
+                {
+                    if (character == '*')
+                    {
+                        int? gear1 = null;
+                        int? gear2 = null;
+                        bool spaceBetweenDigits = true;
+                        // Check row above.
+                        if (rowIndex - 1 >= 0)
+                        {
+                            if (columnIndex - 1 >= 0 && char.IsNumber(inputArray[rowIndex - 1][columnIndex - 1]))
+                            {
+                                spaceBetweenDigits = false;
+                                int num = GetNumberAtLocation(inputArray, rowIndex - 1, columnIndex - 1);
+                                if (gear1 == null)
+                                {
+                                    gear1 = num;
+                                }
+                                else if (gear2 == null)
+                                {
+                                    gear2 = num;
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            }
+                            if (char.IsNumber(inputArray[rowIndex - 1][columnIndex]))
+                            {
+                                if (spaceBetweenDigits)
+                                {
+                                    spaceBetweenDigits = false;
+                                    int num = GetNumberAtLocation(inputArray, rowIndex - 1, columnIndex);
+                                    if (gear1 == null)
+                                    {
+                                        gear1 = num;
+                                    }
+                                    else if (gear2 == null)
+                                    {
+                                        gear2 = num;
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                spaceBetweenDigits = true;
+                            }
+                            if (columnIndex + 1 < line.Length && char.IsNumber(inputArray[rowIndex - 1][columnIndex + 1]))
+                            {
+                                if (spaceBetweenDigits)
+                                {
+                                    spaceBetweenDigits = false;
+                                    int num = GetNumberAtLocation(inputArray, rowIndex - 1, columnIndex + 1);
+                                    if (gear1 == null)
+                                    {
+                                        gear1 = num;
+                                    }
+                                    else if (gear2 == null)
+                                    {
+                                        gear2 = num;
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                spaceBetweenDigits = true;
+                            }
+                        }
+
+                        // Check same row.
+                        if (columnIndex - 1 >= 0 && char.IsNumber(inputArray[rowIndex][columnIndex - 1]))
+                        {
+                            int num = GetNumberAtLocation(inputArray, rowIndex, columnIndex - 1);
+                            if (gear1 == null)
+                            {
+                                gear1 = num;
+                            }
+                            else if (gear2 == null)
+                            {
+                                gear2 = num;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+                        if (columnIndex + 1 < line.Length && char.IsNumber(inputArray[rowIndex][columnIndex + 1]))
+                        {
+                            int num = GetNumberAtLocation(inputArray, rowIndex, columnIndex + 1);
+                            if (gear1 == null)
+                            {
+                                gear1 = num;
+                            }
+                            else if (gear2 == null)
+                            {
+                                gear2 = num;
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+
+                        // Check row below.
+                        if (rowIndex + 1 < inputArray.Length)
+                        {
+                            spaceBetweenDigits = true;
+                            if (columnIndex - 1 >= 0 && char.IsNumber(inputArray[rowIndex + 1][columnIndex - 1]))
+                            {
+                                spaceBetweenDigits = false;
+                                int num = GetNumberAtLocation(inputArray, rowIndex + 1, columnIndex - 1);
+                                if (gear1 == null)
+                                {
+                                    gear1 = num;
+                                }
+                                else if (gear2 == null)
+                                {
+                                    gear2 = num;
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            }
+                            if (char.IsNumber(inputArray[rowIndex + 1][columnIndex]))
+                            {
+                                if (spaceBetweenDigits)
+                                {
+                                    spaceBetweenDigits = false;
+                                    int num = GetNumberAtLocation(inputArray, rowIndex + 1, columnIndex);
+                                    if (gear1 == null)
+                                    {
+                                        gear1 = num;
+                                    }
+                                    else if (gear2 == null)
+                                    {
+                                        gear2 = num;
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                spaceBetweenDigits = true;
+                            }
+                            if (columnIndex + 1 < line.Length && char.IsNumber(inputArray[rowIndex + 1][columnIndex + 1]))
+                            {
+                                if (spaceBetweenDigits)
+                                {
+                                    spaceBetweenDigits = false;
+                                    int num = GetNumberAtLocation(inputArray, rowIndex + 1, columnIndex + 1);
+                                    if (gear1 == null)
+                                    {
+                                        gear1 = num;
+                                    }
+                                    else if (gear2 == null)
+                                    {
+                                        gear2 = num;
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+
+                        total += (gear1 ?? 0) * (gear2 ?? 0);
+                    }
+                    columnIndex++;
+                }
+                rowIndex++;
+            }
+
+            Console.WriteLine("Day 3, puzzle 2: " + total);
         }
 
         private static char[][] Create2Darray(string input)

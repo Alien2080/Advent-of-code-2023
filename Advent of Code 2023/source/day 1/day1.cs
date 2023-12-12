@@ -1,5 +1,3 @@
-using System.Data.Common;
-
 namespace solutions
 {
     public class Day1
