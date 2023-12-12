@@ -10,55 +10,106 @@ namespace solutions
 
         public static void Puzzle1()
         {
-            string input = File.ReadAllText(inputFilePath);  
+            string input = File.ReadAllText(inputFilePath);
             var inputArray = Create2Darray(input);
 
             int total = 0;
-
             int rowIndex = 0;
             int columnIndex;
-
             foreach (var line in inputArray)
             {
                 columnIndex = 0;
-
                 foreach (var character in line)
                 {
                     if (!char.IsNumber(character) && character != '.')
                     {
-                        // check row above.
-                        if (rowIndex - 1 > 0)
+                        bool spaceBetweenDigits = true;
+                        // Check row above.
+                        if (rowIndex - 1 >= 0)
                         {
-                            if (columnIndex -1 > 0 && char.IsNumber(inputArray[rowIndex-1][columnIndex-1]))
+                            if (columnIndex - 1 >= 0 && char.IsNumber(inputArray[rowIndex - 1][columnIndex - 1]))
                             {
-                                GetNumberAtLocation(inputArray, rowIndex-1, columnIndex-1);
+                                spaceBetweenDigits = false;
+                                total += GetNumberAtLocation(inputArray, rowIndex - 1, columnIndex - 1);
                             }
-                            if (char.IsNumber(inputArray[(rowIndex-1)][columnIndex]))
+                            if (char.IsNumber(inputArray[rowIndex - 1][columnIndex]))
                             {
-
+                                if (spaceBetweenDigits)
+                                {
+                                    spaceBetweenDigits = false;
+                                    total += GetNumberAtLocation(inputArray, rowIndex - 1, columnIndex);
+                                }
                             }
-                            if (columnIndex + 1 < line.Length && char.IsNumber(inputArray[(rowIndex-1)][columnIndex+1]))
+                            else
                             {
-
+                                spaceBetweenDigits = true;
                             }
-                        } 
+                            if (columnIndex + 1 < line.Length && char.IsNumber(inputArray[rowIndex - 1][columnIndex + 1]))
+                            {
+                                if (spaceBetweenDigits)
+                                {
+                                    spaceBetweenDigits = false;
+                                    total += GetNumberAtLocation(inputArray, rowIndex - 1, columnIndex + 1);
+                                }
+                            }
+                            else
+                            {
+                                spaceBetweenDigits = true;
+                            }
+                        }
 
-                        // check same row.
+                        // Check same row.
+                        if (columnIndex - 1 >= 0 && char.IsNumber(inputArray[rowIndex][columnIndex - 1]))
+                        {
+                            total += GetNumberAtLocation(inputArray, rowIndex, columnIndex - 1);
+                        }
+                        if (columnIndex + 1 < line.Length && char.IsNumber(inputArray[rowIndex][columnIndex + 1]))
+                        {
+                            total += GetNumberAtLocation(inputArray, rowIndex, columnIndex + 1);
+                        }
 
-                        // check row below.
-
+                        // Check row below.
+                        if (rowIndex + 1 < inputArray.Length)
+                        {
+                            spaceBetweenDigits = true;
+                            if (columnIndex - 1 >= 0 && char.IsNumber(inputArray[rowIndex + 1][columnIndex - 1]))
+                            {
+                                spaceBetweenDigits = false;
+                                total += GetNumberAtLocation(inputArray, rowIndex + 1, columnIndex - 1);
+                            }
+                            if (char.IsNumber(inputArray[rowIndex + 1][columnIndex]))
+                            {
+                                if (spaceBetweenDigits)
+                                {
+                                    spaceBetweenDigits = false;
+                                    total += GetNumberAtLocation(inputArray, rowIndex + 1, columnIndex);
+                                }
+                            }
+                            else
+                            {
+                                spaceBetweenDigits = true;
+                            }
+                            if (columnIndex + 1 < line.Length && char.IsNumber(inputArray[rowIndex + 1][columnIndex + 1]))
+                            {
+                                if (spaceBetweenDigits)
+                                {
+                                    spaceBetweenDigits = false;
+                                    total += GetNumberAtLocation(inputArray, rowIndex + 1, columnIndex + 1);
+                                }
+                            }
+                            else
+                            {
+                                spaceBetweenDigits = true;
+                            }
+                        }
                     }
-                    
                     columnIndex++;
                 }
-
                 rowIndex++;
             }
 
             Console.WriteLine("Day 2, puzzle 1: " + total);
         }
-
-     
 
         public static void Puzzle2()
         {
@@ -72,13 +123,31 @@ namespace solutions
                     .Split(Environment.NewLine)
                     .Select(s => s.ToCharArray())
                     .ToArray();
-            
+
             return data;
         }
 
-           private static void GetNumberAtLocation(char[][] inputArray, int v1, int v2)
+        private static int GetNumberAtLocation(char[][] inputArray, int row, int column)
         {
-            
+            int index = 1;
+            List<char> result = inputArray[row][column].ToString().ToList();
+
+            // Check is chars before are numbers.
+            while (column - index >= 0 && char.IsNumber(inputArray[row][column - index]))
+            {
+                result.Insert(0, inputArray[row][column - index]);
+                index++;
+            }
+
+            // Check is chars after are numbers.
+            index = 1;
+            while (column + index < inputArray[row].Length && char.IsNumber(inputArray[row][column + index]))
+            {
+                result.Add(inputArray[row][column + index]);
+                index++;
+            }
+
+            return int.Parse(new string(result.ToArray()));
         }
     }
 }
